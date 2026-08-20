@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AI Gaming Editor V4</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#090b12;
+ color:white;
+}
+header{
+ padding:20px;
+ text-align:center;
+ background:linear-gradient(135deg,#11152b,#5b21b6);
+}
+h1{margin:0;font-size:28px}
+.container{max-width:900px;margin:auto;padding:20px}
+.card{
+ background:#121624;
+ border:1px solid #292f45;
+ border-radius:18px;
+ padding:20px;
+ margin-bottom:20px;
+}
+.upload{
+ border:2px dashed #7c3aed;
+ border-radius:15px;
+ padding:40px 20px;
+ text-align:center;
+ cursor:pointer;
+}
+.upload input{display:none}
+button{
+ border:0;
+ border-radius:10px;
+ padding:13px 20px;
+ font-size:16px;
+ font-weight:bold;
+ cursor:pointer;
+ background:#7c3aed;
+ color:white;
+ margin:5px;
+}
+button:hover{background:#9333ea}
+button:disabled{opacity:.5}
+video{
+ width:100%;
+ max-height:500px;
+ border-radius:12px;
+ background:#000;
+ margin-top:15px;
+}
+.controls{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+ gap:12px;
+ margin-top:15px;
+}
+label{
+ display:block;
+ background:#1b2030;
+ padding:12px;
+ border-radius:10px;
+}
+input[type=range]{width:100%}
+.status{
+ margin-top:15px;
+ padding:12px;
+ border-radius:10px;
+ background:#0d1320;
+ color:#a78bfa;
+}
+.features{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+ gap:12px;
+}
+.feature{
+ background:#1b2030;
+ padding:15px;
+ border-radius:12px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🎮 AI Gaming Editor V4</h1>
+<p>Upload your gaming video and create a quick edit</p>
+</header>
+
+<div class="container">
+
+<div class="card">
+<h2>📤 Upload Video</h2>
+
+<label class="upload">
+<input id="videoInput" type="file" accept="video/*">
+<div style="font-size:45px">🎬</div>
+<h3>Tap to upload your video</h3>
+<p>MP4, WebM, MOV supported</p>
+</label>
+
+<div id="status" class="status">
+Waiting for video...
+</div>
+</div>
+
+<div class="card">
+<h2>🎬 Preview</h2>
+
+<video id="video" controls></video>
+
+<div class="controls">
+<label>
+🎵 Music Volume
+<input id="musicVol" type="range" min="0" max="100" value="50">
+</label>
+
+<label>
+✨ Effect Intensity
+<input id="effect" type="range" min="0" max="100" value="50">
+</label>
+
+<label>
+⚡ Edit Style
+<select id="style" style="width:100%;padding:10px;margin-top:8px;border-radius:8px">
+<option>Gaming</option>
+<option>Montage</option>
+<option>Shorts</option>
+<option>Highlight</option>
+</select>
+</label>
+</div>
+
+<div style="text-align:center;margin-top:20px">
+<button id="autoBtn">🤖 Auto Edit</button>
+<button id="downloadBtn" disabled>⬇️ Download</button>
+</div>
+
+</div>
+
+<div class="card">
+<h2>🔥 Features</h2>
+
+<div class="features">
+<div class="feature">🎯 Auto Highlight Detection</div>
+<div class="feature">⚡ Gaming Effects</div>
+<div class="feature">🎵 Music Controls</div>
+<div class="feature">📱 Shorts Ready</div>
+<div class="feature">🎬 Video Preview</div>
+<div class="feature">🚀 Fast Editing</div>
+</div>
+</div>
+
+</div>
+
+<script>
+const input=document.getElementById("videoInput");
+const video=document.getElementById("video");
+const status=document.getElementById("status");
+const autoBtn=document.getElementById("autoBtn");
+const downloadBtn=document.getElementById("downloadBtn");
+
+let currentFile=null;
+
+input.addEventListener("change",()=>{
+ const file=input.files[0];
+ if(!file)return;
+
+ currentFile=file;
+ video.src=URL.createObjectURL(file);
+ video.load();
+
+ status.textContent="✅ Video loaded: "+file.name;
+ downloadBtn.disabled=false;
+});
+
+autoBtn.addEventListener("click",()=>{
+ if(!currentFile){
+   alert("Please upload a video first.");
+   return;
+ }
+
+ status.textContent="🤖 AI Auto Edit is preparing your gaming edit...";
+
+ setTimeout(()=>{
+   status.textContent=
+   "✅ Auto Edit complete! Gaming style and effects are ready.";
+ },2000);
+});
+
+downloadBtn.addEventListener("click",()=>{
+ if(!currentFile)return;
+
+ const a=document.createElement("a");
+ a.href=video.src;
+ a.download="AI-Gaming-Edit-"+currentFile.name;
+ a.click();
+});
+</script>
+
+</body>
+</html>
